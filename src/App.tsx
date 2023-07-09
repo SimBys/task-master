@@ -9,29 +9,36 @@ import {
     Outlet,
 } from "react-router-dom";
 import {fakeAuthProvider} from "./pages/auth";
+import Navbar from "./Components/Navbar";
 
 export default function App() {
     return (
-        <AuthProvider>
-            <h1>Auth</h1>
+        <>
+            <Navbar />
 
-            <Routes>
-                <Route element={<Layout />}>
-                    <Route path="/" element={<PublicPage />} />
-                    <Route path="/login" element={<LoginPage />} />
-                    <Route
-                        path="/protected"
-                        element={
-                            <RequireAuth>
-                                <ProtectedPage />
-                            </RequireAuth>
-                        }
-                    />
-                </Route>
-            </Routes>
-        </AuthProvider>
+            <AuthProvider>
+                <h1>Auth</h1>
+
+                {router}
+            </AuthProvider>
+        </>
     );
 }
+
+const router = <Routes>
+    <Route element={<Layout />}>
+        <Route path="/" element={<PublicPage />} />
+        <Route path="/login" element={<LoginPage />} />
+        <Route
+            path="/protected"
+            element={
+                <RequireAuth>
+                    <ProtectedPage />
+                </RequireAuth>
+            }
+        />
+    </Route>
+</Routes>
 
 function Layout() {
     return (
