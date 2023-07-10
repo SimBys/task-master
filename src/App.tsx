@@ -1,63 +1,52 @@
-import * as React from "react";
-import {
-    Routes,
-    Route,
-    Link,
-    useNavigate,
-    useLocation,
-    Navigate,
-    Outlet,
-} from "react-router-dom";
-import {fakeAuthProvider} from "./pages/auth";
+import { Link, Navigate, Outlet, Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { fakeAuthProvider } from "./pages/auth";
 import Navbar from "./Components/Navbar";
+import Home from "./pages/Home";
+import { createContext, useContext, useEffect, useState } from "react";
+import About from "./pages/About";
+import { Helmet } from "react-helmet";
 
 export default function App() {
     return (
-        <>
+        <AuthProvider>
             <Navbar />
+            <RouterWithTitles />
+        </AuthProvider>
+    );
+}
 
-            <AuthProvider>
-                <h1>Auth</h1>
+const RouterWithTitles = () => {
+    const location = useLocation();
+    const [title, setTitle] = useState("");
 
-                {router}
-            </AuthProvider>
+    useEffect(() => {
+        const currentPath = location.pathname;
+
+        // Set the title based on the current route
+        switch (currentPath) {
+            case "/":
+                setTitle("Task master");
+                break;
+            case "/about":
+                setTitle("About - Task master");
+                break;
+            default:
+                setTitle("My App");
+        }
+    }, [location]);
+
+    return (
+        <>
+            <Helmet>
+                <title>{title}</title>
+            </Helmet>
+            <Routes>
+                <Route path="" element={<Home />} />
+                <Route path="about" element={<About />} />
+            </Routes>
         </>
     );
-}
-
-const router = <Routes>
-    <Route element={<Layout />}>
-        <Route path="/" element={<PublicPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route
-            path="/protected"
-            element={
-                <RequireAuth>
-                    <ProtectedPage />
-                </RequireAuth>
-            }
-        />
-    </Route>
-</Routes>
-
-function Layout() {
-    return (
-        <div>
-            <AuthStatus />
-
-            <ul>
-                <li>
-                    <Link to="/">Public Page</Link>
-                </li>
-                <li>
-                    <Link to="/protected">Protected Page</Link>
-                </li>
-            </ul>
-
-            <Outlet />
-        </div>
-    );
-}
+};
 
 interface AuthContextType {
     user: any;
@@ -65,10 +54,10 @@ interface AuthContextType {
     signout: (callback: VoidFunction) => void;
 }
 
-let AuthContext = React.createContext<AuthContextType>(null!);
+let AuthContext = createContext<AuthContextType>(null!);
 
 function AuthProvider({ children }: { children: React.ReactNode }) {
-    let [user, setUser] = React.useState<any>(null);
+    let [user, setUser] = useState<any>(null);
 
     let signin = (newUser: string, callback: VoidFunction) => {
         return fakeAuthProvider.signin(() => {
@@ -90,29 +79,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
 }
 
 function useAuth() {
-    return React.useContext(AuthContext);
-}
-
-function AuthStatus() {
-    let auth = useAuth();
-    let navigate = useNavigate();
-
-    if (!auth.user) {
-        return <p>You are not logged in.</p>;
-    }
-
-    return (
-        <p>
-            Welcome {auth.user}!{" "}
-            <button
-                onClick={() => {
-                    auth.signout(() => navigate("/"));
-                }}
-            >
-                Sign out
-            </button>
-        </p>
-    );
+    return useContext(AuthContext);
 }
 
 function RequireAuth({ children }: { children: JSX.Element }) {
@@ -144,12 +111,6 @@ function LoginPage() {
         let username = formData.get("username") as string;
 
         auth.signin(username, () => {
-            // Send them back to the page they tried to visit when they were
-            // redirected to the login page. Use { replace: true } so we don't create
-            // another entry in the history stack for the login page.  This means that
-            // when they get to the protected page and click the back button, they
-            // won't end up back on the login page, which is also really nice for the
-            // user experience.
             navigate(from, { replace: true });
         });
     }
@@ -166,12 +127,4 @@ function LoginPage() {
             </form>
         </div>
     );
-}
-
-function PublicPage() {
-    return <h3>Public</h3>;
-}
-
-function ProtectedPage() {
-    return <h3>Protected</h3>;
 }
