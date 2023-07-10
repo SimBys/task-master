@@ -1,0 +1,10 @@
+.container {
+    border: 1px solid white;
+    width: 30%;
+    height: 60%;
+
+    text-align: center;
+    position: fixed;
+    left: 50%;
+    translate: -50%;
+}
