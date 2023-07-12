@@ -3,6 +3,9 @@
 	color: #fff;
 	display: flex;
 	position: relative;
+	user-select: none;
+	font-weight: 700;
+	font-size: 1.2rem;
 }
 
 .underline {
@@ -15,18 +18,16 @@
 }
 
 .active {
-	background-color: orange;
+	background-color: #696969;
 }
 
 .navbar a {
 	color: #fff;
-	text-decoration: none;
 	padding: 15px;
-	font-weight: 700;
-	font-size: 1.2rem;
+	text-decoration: none;
 }
 
-.navbar a:hover:not(.active) {
+.navbar a:hover:not(.active), .profile:hover {
 	background-color: #474747;
 }
 
@@ -38,4 +39,12 @@
 .profile {
 	display: flex;
 	align-items: center;
+	justify-content: center;
+	position: absolute;
+	right: 0;
+	width: 55px; /* Set the width to the desired size */
+	height: 55px; /* Set the height to the same size as the width */
+	border-radius: 50%;
+	border: 0.5px solid #fff;
+	cursor: pointer;
 }
