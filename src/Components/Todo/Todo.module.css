@@ -1,7 +1,7 @@
 .container {
     border: 1px solid white;
     width: 30%;
-    height: 60%;
+    height: 80%;
 
     text-align: center;
     position: fixed;
@@ -11,7 +11,14 @@
     flex-flow: column;
 }
 
-.task-container {
-    border: 1px solid red;
+.taskContainer {
     flex: 1;
+    overflow: auto;
+    scroll-behavior: smooth;
+    overflow-y: scroll;
+}
+
+.showCompletedTasksButton {
+    color: white;
+    border: white 1px solid;
 }

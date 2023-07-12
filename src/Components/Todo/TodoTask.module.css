@@ -1,4 +1,27 @@
 .container {
-    border: 1px solid white;
+    border: .3px solid white;
     height: 30px;
+    display: flex;
+}
+
+button {
+    all: unset;
+    cursor: pointer;
+    color: #232323;
+    /*font-weight: bolder;*/
+    border: 1px solid black;
+    user-select: none;
+}
+
+.doneButton {
+    background-color: greenyellow;
+}
+
+input {
+    all: unset;
+    flex: 1;
+}
+
+.deleteButton {
+    background-color: red;
 }
