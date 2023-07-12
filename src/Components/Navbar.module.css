@@ -5,6 +5,10 @@
 	display: flex;
 }
 
+.active {
+	background-color: orange;
+}
+
 .navbar a {
 	color: #fff;
 	text-decoration: none;
@@ -20,7 +24,7 @@
 }
 
 .navbar a:hover{
-	background-color: #fff;
+	background-color: #4e4e4e;
 	text-decoration: none;
 }
 
