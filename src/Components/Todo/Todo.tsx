@@ -23,16 +23,18 @@ export default function Todo() {
 
     const deleteTask = (id: number) => setTasks(tasks.filter(a => a.id !== id))
 
+    const toggleFavorite = (id: number) => setTasks(tasks.map(a => a.id === id ? {...a, favorite: !a.favorite} : a))
+
 
     return <div className={styles.container}>
         <h2>Todo</h2>
 
-        <TodoTask onValueChange={addTask} addTaskFunc={addTask}/>
+        <TodoTask onValueChange={addTask} isAddTask/>
 
         <div className={styles.taskContainer}>
             {/*Tasks*/}
-            {tasks.filter(a => !a.completed).map((task, index) => <TodoTask key={task.id} task={task}
-                onComplete={onTaskComplete} onDelete={deleteTask}/>)}
+            {tasks.filter(a => !a.completed).sort((a, b) => a.favorite ? 0 : 1).map((task, index) => <TodoTask key={task.id} task={task}
+                onComplete={onTaskComplete} onDelete={deleteTask} onToggleFavorite={toggleFavorite}/>)}
             {/*Completed tasks toggle*/}
             <div>
                 <h5>Completed</h5>

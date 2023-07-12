@@ -7,9 +7,9 @@
 button {
     all: unset;
     cursor: pointer;
-    color: #232323;
+    /*color: #232323;*/
     /*font-weight: bolder;*/
-    border: 1px solid black;
+    /*border: 1px solid black;*/
     user-select: none;
 }
 
@@ -24,4 +24,8 @@ input {
 
 .deleteButton {
     background-color: red;
+}
+
+.favorite {
+    background-color: yellow;
 }
