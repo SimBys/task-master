@@ -1,8 +1,17 @@
 .navbar {
 	background-color: #1a1a1a;
 	color: #fff;
-	margin-bottom: 1rem;
 	display: flex;
+	position: relative;
+}
+
+.underline {
+	background-color: #fff;
+	position: absolute;
+	height: 3px;
+	/*border-radius: 5px;*/
+	bottom: 0;
+	transition: left 0.1s, width 0.1s;
 }
 
 .active {
@@ -12,20 +21,13 @@
 .navbar a {
 	color: #fff;
 	text-decoration: none;
-	padding: 0.5rem;
+	padding: 15px;
+	font-weight: 700;
+	font-size: 1.2rem;
 }
 
-.navbar div {
-	padding: 0.5rem;
-}
-
-.navbar div:hover {
-	cursor: default;
-}
-
-.navbar a:hover{
-	background-color: #4e4e4e;
-	text-decoration: none;
+.navbar a:hover:not(.active) {
+	background-color: #474747;
 }
 
 .navbar .logo {
