@@ -1,16 +1,27 @@
-import { Link, Navigate, Outlet, Route, Routes, useLocation, useNavigate } from "react-router-dom";
-import { fakeAuthProvider } from "./pages/auth";
+import {Navigate, Route, Routes, useLocation, useNavigate} from "react-router-dom";
+import {fakeAuthProvider} from "./pages/auth";
 import Navbar from "./Components/Navbar";
 import Home from "./pages/Home";
-import { createContext, useContext, useEffect, useState } from "react";
+import {createContext, useContext, useEffect, useState} from "react";
 import About from "./pages/About";
-import { Helmet } from "react-helmet";
+import {Helmet} from "react-helmet";
+import {TodoTaskType} from "./Components/Todo/TodoTask";
+import {loadTodoData} from "./DataController";
+
+export const TodoDataContext = createContext<{ tasks: TodoTaskType[], setTasks: Function }>(null!);
 
 export default function App() {
+    const [todoTasks, setTodoTasks] = useState<TodoTaskType[]>(loadTodoData() ?? []);
+
+    console.log(todoTasks)
+    console.log(typeof todoTasks)
+
     return (
         <AuthProvider>
-            <Navbar />
-            <RouterWithTitles />
+            <TodoDataContext.Provider value={{ tasks: todoTasks, setTasks: setTodoTasks }}>
+                <Navbar />
+                <RouterWithTitles />
+            </TodoDataContext.Provider>
         </AuthProvider>
     );
 }

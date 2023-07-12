@@ -1,21 +1,27 @@
 import styles from './Todo.module.css'
 import TodoTask, {TodoTaskType} from "./TodoTask";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
+import {TodoDataContext} from "../../App";
+import {saveTodoData} from "../../DataController";
 
 export default function Todo() {
-    const [tasks, setTasks] = useState<TodoTaskType[]>([{value: 'Task 1', id: 1}, {
-        value: 'Task 2',
-        id: 2
-    }, {value: 'Task 3', id: 3},]);
     const [showCompleted, setShowCompleted] = useState(false);
+    const ctx = useContext(TodoDataContext)
 
-    const onTaskComplete = (id: number) => {
-        setTasks(tasks.map(a => a.id === id ? {...a, completed: true} : a))
+    const tasks = ctx.tasks
+    const setTasks = ctx.setTasks
+
+    useEffect(() => {
+        save()
+    }, [tasks]);
+
+    function save() {
+        saveTodoData(tasks)
     }
 
-    const onTaskUncomplete = (id: number) => {
-        setTasks(tasks.map(a => a.id === id ? {...a, completed: false} : a))
-    }
+    const onTaskComplete = (id: number) => setTasks(tasks.map(a => a.id === id ? {...a, completed: true} : a))
+
+    const onTaskUncomplete = (id: number) => setTasks(tasks.map(a => a.id === id ? {...a, completed: false} : a))
 
     const addTask = (value: string) => setTasks([...tasks, {value, id: tasks.length + 1}])
 
