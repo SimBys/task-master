@@ -1,15 +1,19 @@
 import styles from './Home.module.css';
-import Todo from "../Components/Todo/Todo";
+import {NavLink} from "react-router-dom";
+
+/**
+ * @desc First page the user sees before logging in.
+ */
+
 
 export default function Home() {
-    return (
-        <>
-            <h1 style={{textAlign: 'center'}}>TASK MASTER</h1>
-            <h2 style={{textAlign: 'center'}}>The Ultimate TODO</h2>
 
-            <Todo />
 
-            <p className={styles.footer}>*All data is stored locally in your browser. No data is sent to any server.</p>
-        </>
-    );
+
+	return <nav>
+		<NavLink to={'Login'}>Log in</NavLink>
+		<NavLink to={'SignUp'}>Sign up</NavLink>
+		Dashboard
+
+	</nav>
 }

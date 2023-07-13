@@ -14,11 +14,11 @@
 	height: 3px;
 	/*border-radius: 5px;*/
 	bottom: 0;
-	transition: left 0.1s, width 0.1s;
+	transition: left .2s, width .2s;
 }
 
 .active {
-	background-color: #696969;
+	/*background-color: #696969;*/
 }
 
 .navbar a {

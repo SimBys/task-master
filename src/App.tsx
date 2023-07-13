@@ -1,28 +1,45 @@
 import {Navigate, Route, Routes, useLocation, useNavigate} from "react-router-dom";
 import {fakeAuthProvider} from "./pages/auth";
 import Navbar from "./Components/Navbar";
-import Home from "./pages/Home";
+import Dashboard from "./pages/Dashboard";
 import {createContext, useContext, useEffect, useState} from "react";
 import About from "./pages/About";
 import {Helmet} from "react-helmet";
 import {TodoTaskType} from "./Components/Todo/TodoTask";
 import {loadTodoData} from "./DataController";
+import Home from "./pages/Home";
 
 export const TodoDataContext = createContext<{ tasks: TodoTaskType[], setTasks: Function }>(null!);
 
 export default function App() {
     const [todoTasks, setTodoTasks] = useState<TodoTaskType[]>(loadTodoData() ?? []);
+    let [user, setUser] = useState<any>(null);
 
-    console.log(todoTasks)
-    console.log(typeof todoTasks)
+
+    let signin = (newUser: string, callback: VoidFunction) => {
+        return fakeAuthProvider.signin(() => {
+            setUser(newUser);
+            callback();
+        });
+    };
+
+    let signout = (callback: VoidFunction) => {
+        return fakeAuthProvider.signout(() => {
+            setUser(null);
+            callback();
+        });
+    };
+
+    // if (user == null)
+    //     return <Home />
 
     return (
-        <AuthProvider>
+        <AuthContext.Provider value={{ user, signin, signout }}>
             <TodoDataContext.Provider value={{ tasks: todoTasks, setTasks: setTodoTasks }}>
                 <Navbar />
                 <RouterWithTitles />
             </TodoDataContext.Provider>
-        </AuthProvider>
+        </AuthContext.Provider>
     );
 }
 
@@ -52,8 +69,9 @@ const RouterWithTitles = () => {
                 <title>{title}</title>
             </Helmet>
             <Routes>
-                <Route path="" element={<Home />} />
+                <Route path="" element={<Dashboard />} />
                 <Route path="about" element={<About />} />
+                <Route path="login" element={<LoginPage />} />
             </Routes>
         </>
     );
@@ -66,28 +84,6 @@ type AuthContextType = {
 }
 
 let AuthContext = createContext<AuthContextType>(null!);
-
-function AuthProvider({ children }: { children: React.ReactNode }) {
-    let [user, setUser] = useState<any>(null);
-
-    let signin = (newUser: string, callback: VoidFunction) => {
-        return fakeAuthProvider.signin(() => {
-            setUser(newUser);
-            callback();
-        });
-    };
-
-    let signout = (callback: VoidFunction) => {
-        return fakeAuthProvider.signout(() => {
-            setUser(null);
-            callback();
-        });
-    };
-
-    let value = { user, signin, signout };
-
-    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-}
 
 function useAuth() {
     return useContext(AuthContext);

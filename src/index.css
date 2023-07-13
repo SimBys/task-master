@@ -9,7 +9,13 @@ body {
   color: #FFF;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+button {
+    background-color: #1c2323;
+    color: #FFF;
+    border: 1px solid #FFF;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 16px;
+    margin: 5px;
 }
