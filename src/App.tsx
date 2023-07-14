@@ -8,6 +8,8 @@ import {Helmet} from "react-helmet";
 import {TodoTaskType} from "./Components/Todo/TodoTask";
 import {loadTodoData} from "./DataController";
 import Home from "./pages/Home";
+import {Experimental_CssVarsProvider as CssVarsProvider} from "@mui/material/styles/CssVarsProvider";
+import LogIn from "./pages/LogIn";
 
 export const TodoDataContext = createContext<{ tasks: TodoTaskType[], setTasks: Function }>(null!);
 
@@ -30,20 +32,17 @@ export default function App() {
         });
     };
 
-    // if (user == null)
-    //     return <Home />
-
     return (
         <AuthContext.Provider value={{ user, signin, signout }}>
             <TodoDataContext.Provider value={{ tasks: todoTasks, setTasks: setTodoTasks }}>
-                <Navbar />
-                <RouterWithTitles />
+                {user && <Navbar/>}
+                <RouterOutlet user={user} />
             </TodoDataContext.Provider>
         </AuthContext.Provider>
     );
 }
 
-const RouterWithTitles = () => {
+const RouterOutlet = (props: {user: any}) => {
     const location = useLocation();
     const [title, setTitle] = useState("");
 
@@ -52,14 +51,17 @@ const RouterWithTitles = () => {
 
         // Set the title based on the current route
         switch (currentPath) {
-            case "/":
-                setTitle("Task master");
-                break;
             case "/about":
                 setTitle("About - Task master");
                 break;
+            case "/login":
+                setTitle("Log in - Task master");
+                break;
+            case "/sign-up":
+                setTitle("Sign up - Task master");
+                break;
             default:
-                setTitle("My App");
+                setTitle("Task master");
         }
     }, [location]);
 
@@ -69,9 +71,14 @@ const RouterWithTitles = () => {
                 <title>{title}</title>
             </Helmet>
             <Routes>
-                <Route path="" element={<Dashboard />} />
+                <Route path="" element={props.user ? <Dashboard /> : <Home />} />
+                <Route path="login" element={
+                    <CssVarsProvider>
+                        <LogIn />
+                    </CssVarsProvider>
+                } />
+                <Route path="sign-up" element={<About />} />
                 <Route path="about" element={<About />} />
-                <Route path="login" element={<LoginPage />} />
             </Routes>
         </>
     );
