@@ -1,13 +1,15 @@
 import React, {useContext, useState} from 'react';
-import {Button, Grid, TextField, Typography,} from '@mui/material';
+import {Button, Grid, IconButton, InputAdornment, TextField, Typography,} from '@mui/material';
 import {NavLink} from "react-router-dom";
 import {AuthContext} from "../App";
+import {Visibility, VisibilityOff} from '@mui/icons-material';
 
 
 export default function LogIn() {
 	const auth = useContext(AuthContext)
 	const [emailErrorMessage, setEmailErrorMessage] = useState('');
 	const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
+	const [showPassword, setShowPassword] = useState(false);
 
 
 	function checkEmail(email: string) {
@@ -25,6 +27,20 @@ export default function LogIn() {
 		setEmailErrorMessage('')
 	}
 
+	function checkPassword(password: string) {
+		if (password.length === 0) {
+			setPasswordErrorMessage('Password is required')
+			return
+		}
+
+		if (password.length < 6) {
+			setPasswordErrorMessage('Password must be at least 6 characters')
+			return
+		}
+
+		setPasswordErrorMessage('')
+	}
+
 	function submit(e: any) {
 		e.preventDefault();
 
@@ -33,15 +49,14 @@ export default function LogIn() {
 		const password = formData.get("password") as string;
 
 		checkEmail(email)
-
-		// check password
+		checkPassword(password)
 
 		auth.logIn(email, password)
 	}
 
 
-	return <Grid container spacing={2} justifyContent="center" alignItems="center" style={{ height: '100vh' }}>
-		<Grid item  md={4}>
+	return <Grid container spacing={2} justifyContent="center" alignItems="center" style={{height: '100vh'}}>
+		<Grid item md={4}>
 			<Typography variant="h4" align="center" gutterBottom>
 				Login
 			</Typography>
@@ -52,18 +67,31 @@ export default function LogIn() {
 							label="Email"
 							name={'email'}
 							fullWidth
-							required
 							helperText={emailErrorMessage}
+							error={emailErrorMessage !== ''}
 						/>
 					</Grid>
 					<Grid item xs={12}>
 						<TextField
+							type={showPassword ? 'text' : 'password'}
 							label="Password"
 							name={'password'}
-							type="password"
 							fullWidth
-							required
 							helperText={passwordErrorMessage}
+							error={passwordErrorMessage !== ''}
+							InputProps={{
+								endAdornment: (
+									<InputAdornment position="end">
+										<IconButton
+											aria-label="toggle password visibility"
+											onClick={() => setShowPassword(!showPassword)}
+											edge="end"
+										>
+											{showPassword ? <VisibilityOff/> : <Visibility/>}
+										</IconButton>
+									</InputAdornment>
+								),
+							}}
 						/>
 					</Grid>
 					<Grid item xs={12}>
