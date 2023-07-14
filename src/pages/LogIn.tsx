@@ -3,6 +3,7 @@ import {Button, Grid, IconButton, InputAdornment, TextField, Typography,} from '
 import {NavLink} from "react-router-dom";
 import {AuthContext} from "../App";
 import {Visibility, VisibilityOff} from '@mui/icons-material';
+import {validatePassword, validateEmail} from "../helper";
 
 
 export default function LogIn() {
@@ -12,35 +13,6 @@ export default function LogIn() {
 	const [showPassword, setShowPassword] = useState(false);
 
 
-	function checkEmail(email: string) {
-		if (email.length === 0) {
-			setEmailErrorMessage('Email address is required')
-			return
-		}
-
-		const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
-		if (!emailRegex.test(email)) {
-			setEmailErrorMessage('Invalid email address')
-			return;
-		}
-
-		setEmailErrorMessage('')
-	}
-
-	function checkPassword(password: string) {
-		if (password.length === 0) {
-			setPasswordErrorMessage('Password is required')
-			return
-		}
-
-		if (password.length < 6) {
-			setPasswordErrorMessage('Password must be at least 6 characters')
-			return
-		}
-
-		setPasswordErrorMessage('')
-	}
-
 	function submit(e: any) {
 		e.preventDefault();
 
@@ -48,8 +20,8 @@ export default function LogIn() {
 		const email = formData.get("email") as string;
 		const password = formData.get("password") as string;
 
-		checkEmail(email)
-		checkPassword(password)
+		setEmailErrorMessage(validateEmail(email))
+		setPasswordErrorMessage(validatePassword(password))
 
 		auth.logIn(email, password)
 	}
