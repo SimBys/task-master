@@ -1,8 +1,7 @@
-import {Navigate, Route, Routes, useLocation, useNavigate} from "react-router-dom";
-import {fakeAuthProvider} from "./pages/auth";
+import {Route, Routes, useLocation} from "react-router-dom";
 import Navbar from "./Components/Navbar";
 import Dashboard from "./pages/Dashboard";
-import {createContext, useContext, useEffect, useState} from "react";
+import {createContext, useEffect, useState} from "react";
 import About from "./pages/About";
 import {Helmet} from "react-helmet";
 import {TodoTaskType} from "./Components/Todo/TodoTask";
@@ -11,30 +10,34 @@ import Home from "./pages/Home";
 import {Experimental_CssVarsProvider as CssVarsProvider} from "@mui/material/styles/CssVarsProvider";
 import LogIn from "./pages/LogIn";
 import SignUp from "./pages/SignUp";
+import {logIn, signOut, signUp, User} from "./pages/auth";
 
 export const TodoDataContext = createContext<{ tasks: TodoTaskType[], setTasks: Function }>(null!);
 
+type AuthContextType = {
+    user: any;
+    logIn: (email: string, password: string) => boolean;
+    signOut: VoidFunction;
+    signUp: (username: string, email: string, password: string) => void;
+}
+
+export const AuthContext = createContext<AuthContextType>(null!);
+
 export default function App() {
     const [todoTasks, setTodoTasks] = useState<TodoTaskType[]>(loadTodoData() ?? []);
-    let [user, setUser] = useState<any>(null);
+    let [user, setUser] = useState<User | null>(null);
 
+    const _logIn = (email: string, password: string) =>logIn(email, password, setUser)
 
-    let signin = (newUser: string, callback: VoidFunction) => {
-        return fakeAuthProvider.signin(() => {
-            setUser(newUser);
-            callback();
-        });
-    };
+    function _signOut() {
+        setUser(null)
+        signOut()
+    }
 
-    let signout = (callback: VoidFunction) => {
-        return fakeAuthProvider.signout(() => {
-            setUser(null);
-            callback();
-        });
-    };
+    const _signUp = (username: string, email: string, password: string) => signUp(username, email, password, setUser)
 
     return (
-        <AuthContext.Provider value={{ user, signin, signout }}>
+        <AuthContext.Provider value={{ user, logIn: _logIn, signOut: _signOut, signUp: _signUp }}>
             <TodoDataContext.Provider value={{ tasks: todoTasks, setTasks: setTodoTasks }}>
                 {user && <Navbar/>}
                 <CssVarsProvider>
@@ -84,62 +87,3 @@ const RouterOutlet = (props: {user: any}) => {
         </>
     );
 };
-
-type AuthContextType = {
-    user: any;
-    signin: (user: string, callback: VoidFunction) => void;
-    signout: (callback: VoidFunction) => void;
-}
-
-let AuthContext = createContext<AuthContextType>(null!);
-
-function useAuth() {
-    return useContext(AuthContext);
-}
-
-function RequireAuth({ children }: { children: JSX.Element }) {
-    let auth = useAuth();
-    let location = useLocation();
-
-    if (!auth.user) {
-        // Redirect them to the /login page, but save the current location they were
-        // trying to go to when they were redirected. This allows us to send them
-        // along to that page after they login, which is a nicer user experience
-        // than dropping them off on the home page.
-        return <Navigate to="/login" state={{ from: location }} replace />;
-    }
-
-    return children;
-}
-
-function LoginPage() {
-    let navigate = useNavigate();
-    let location = useLocation();
-    let auth = useAuth();
-
-    let from = location.state?.from?.pathname || "/";
-
-    function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-        event.preventDefault();
-
-        let formData = new FormData(event.currentTarget);
-        let username = formData.get("username") as string;
-
-        auth.signin(username, () => {
-            navigate(from, { replace: true });
-        });
-    }
-
-    return (
-        <div>
-            <p>You must log in to view the page at {from}</p>
-
-            <form onSubmit={handleSubmit}>
-                <label>
-                    Username: <input name="username" type="text" />
-                </label>{" "}
-                <button type="submit">Login</button>
-            </form>
-        </div>
-    );
-}

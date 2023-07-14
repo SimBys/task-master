@@ -1,11 +1,43 @@
-import React, {useState} from 'react';
-import { TextField, Button, Grid, Typography, useColorScheme,} from '@mui/material';
+import React, {useContext, useState} from 'react';
+import {Button, Grid, TextField, Typography,} from '@mui/material';
 import {NavLink} from "react-router-dom";
+import {AuthContext} from "../App";
 
 
 export default function LogIn() {
-	const [mail, setMail] = useState('');
-	const [password, setPassword] = useState('');
+	const auth = useContext(AuthContext)
+	const [emailErrorMessage, setEmailErrorMessage] = useState('');
+	const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
+
+
+	function checkEmail(email: string) {
+		if (email.length === 0) {
+			setEmailErrorMessage('Email address is required')
+			return
+		}
+
+		const emailRegex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i
+		if (!emailRegex.test(email)) {
+			setEmailErrorMessage('Invalid email address')
+			return;
+		}
+
+		setEmailErrorMessage('')
+	}
+
+	function submit(e: any) {
+		e.preventDefault();
+
+		const formData = new FormData(e.currentTarget);
+		const email = formData.get("email") as string;
+		const password = formData.get("password") as string;
+
+		checkEmail(email)
+
+		// check password
+
+		auth.logIn(email, password)
+	}
 
 
 	return <Grid container spacing={2} justifyContent="center" alignItems="center" style={{ height: '100vh' }}>
@@ -13,23 +45,25 @@ export default function LogIn() {
 			<Typography variant="h4" align="center" gutterBottom>
 				Login
 			</Typography>
-			<form>
+			<form onSubmit={submit}>
 				<Grid container spacing={2}>
 					<Grid item xs={12}>
 						<TextField
 							label="Email"
+							name={'email'}
 							fullWidth
-							value={mail}
-							onChange={(e: any) => setMail(e.target.value)}
+							required
+							helperText={emailErrorMessage}
 						/>
 					</Grid>
 					<Grid item xs={12}>
 						<TextField
 							label="Password"
+							name={'password'}
 							type="password"
 							fullWidth
-							value={password}
-							onChange={(e: any) => setPassword(e.target.value)}
+							required
+							helperText={passwordErrorMessage}
 						/>
 					</Grid>
 					<Grid item xs={12}>

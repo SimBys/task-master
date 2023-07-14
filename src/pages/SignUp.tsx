@@ -1,37 +1,20 @@
-import styles from "./SignUp.module.css";
-import {useState} from "react";
-import {Button, Container, Grid, TextField, Typography} from "@mui/material";
+import {useContext, useState} from "react";
+import {Button, Grid, TextField, Typography} from "@mui/material";
 import {NavLink} from "react-router-dom";
+import {AuthContext} from "../App";
 
 export default function SignUp() {
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const auth = useContext(AuthContext)
 
-    const handleNameChange = (event: any) => {
-        setName(event.target.value);
-    };
+    const submit = (e: any) => {
+        e.preventDefault();
 
-    const handleEmailChange = (event: any) => {
-        setEmail(event.target.value);
-    };
+        const formData = new FormData(e.currentTarget);
+        const username = formData.get("username") as string;
+        const email = formData.get("email") as string;
+        const password = formData.get("password") as string;
 
-    const handlePasswordChange = (event: any) => {
-        setPassword(event.target.value);
-    };
-
-    const handleSubmit = (event: any) => {
-        event.preventDefault();
-
-        // Perform sign-up logic here
-        console.log('Name:', name);
-        console.log('Email:', email);
-        console.log('Password:', password);
-
-        // Reset form fields
-        setName('');
-        setEmail('');
-        setPassword('');
+        auth.signUp(username, email, password)
     };
 
     return <Grid container spacing={2} justifyContent="center" alignItems="center" style={{ height: '100vh' }}>
@@ -39,22 +22,18 @@ export default function SignUp() {
             <Typography variant="h4" align="center" gutterBottom>
                 Sign Up
             </Typography>
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={submit}>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
                         <TextField
                             label="Name"
                             fullWidth
-                            value={name}
-                            onChange={handleNameChange}
                         />
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
                             label="Email"
                             fullWidth
-                            value={email}
-                            onChange={handleEmailChange}
                         />
                     </Grid>
                     <Grid item xs={12}>
@@ -62,8 +41,6 @@ export default function SignUp() {
                             label="Password"
                             fullWidth
                             type="password"
-                            value={password}
-                            onChange={handlePasswordChange}
                         />
                     </Grid>
                     <Grid item justifyContent={'center'} xs={12}>
