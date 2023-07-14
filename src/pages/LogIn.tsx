@@ -39,7 +39,7 @@ export default function LogIn() {
 					</Grid>
 					<Grid item>
 						<Typography>
-							Don't have an account? <NavLink to={'sign-up'}>Sign up</NavLink>
+							Don't have an account? <NavLink to={'/sign-up'}>Sign up</NavLink>
 						</Typography>
 					</Grid>
 				</Grid>

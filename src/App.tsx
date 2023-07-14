@@ -10,6 +10,7 @@ import {loadTodoData} from "./DataController";
 import Home from "./pages/Home";
 import {Experimental_CssVarsProvider as CssVarsProvider} from "@mui/material/styles/CssVarsProvider";
 import LogIn from "./pages/LogIn";
+import SignUp from "./pages/SignUp";
 
 export const TodoDataContext = createContext<{ tasks: TodoTaskType[], setTasks: Function }>(null!);
 
@@ -36,7 +37,9 @@ export default function App() {
         <AuthContext.Provider value={{ user, signin, signout }}>
             <TodoDataContext.Provider value={{ tasks: todoTasks, setTasks: setTodoTasks }}>
                 {user && <Navbar/>}
-                <RouterOutlet user={user} />
+                <CssVarsProvider>
+                    <RouterOutlet user={user} />
+                </CssVarsProvider>
             </TodoDataContext.Provider>
         </AuthContext.Provider>
     );
@@ -73,11 +76,9 @@ const RouterOutlet = (props: {user: any}) => {
             <Routes>
                 <Route path="" element={props.user ? <Dashboard /> : <Home />} />
                 <Route path="login" element={
-                    <CssVarsProvider>
-                        <LogIn />
-                    </CssVarsProvider>
+                    <LogIn />
                 } />
-                <Route path="sign-up" element={<About />} />
+                <Route path="sign-up" element={<SignUp />} />
                 <Route path="about" element={<About />} />
             </Routes>
         </>
