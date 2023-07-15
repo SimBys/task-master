@@ -54,5 +54,5 @@ export function signUp(username: string, email: string, password: string, setUse
         email: email
     }
     localStorage.setItem('user', JSON.stringify(user))
-
+    setUser(user)
 }

@@ -1,4 +1,4 @@
-import {Route, Routes, useLocation} from "react-router-dom";
+import {Route, Routes, useLocation, useNavigate} from "react-router-dom";
 import Navbar from "./Components/Navbar";
 import Dashboard from "./pages/Dashboard";
 import {createContext, useEffect, useState} from "react";
@@ -26,16 +26,27 @@ export const AuthContext = createContext<AuthContextType>(null!);
 export default function App() {
 	const [todoTasks, setTodoTasks] = useState<TodoTaskType[]>(loadTodoData() ?? []);
 	let [user, setUser] = useState<User | null>(null);
+	const navigate = useNavigate();
 
 
-	const _logIn = (email: string, password: string) => logIn(email, password, setUser)
+	const _logIn = (email: string, password: string) => {
+		const res = logIn(email, password, setUser)
+		if (res)
+			navigate('')
+
+		return res
+	}
 
 	function _signOut() {
+		navigate('')
 		setUser(null)
 		signOut()
 	}
 
-	const _signUp = (username: string, email: string, password: string) => signUp(username, email, password, setUser)
+	const _signUp = (username: string, email: string, password: string) => {
+		navigate('')
+		signUp(username, email, password, setUser);
+	}
 
 	const theme = createTheme({
 		palette: {

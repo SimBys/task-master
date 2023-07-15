@@ -1,10 +1,16 @@
-import {useContext, useState} from "react";
-import {Button, Grid, TextField, Typography} from "@mui/material";
+import React, {useContext, useState} from "react";
+import {Button, Grid, IconButton, InputAdornment, TextField, Typography} from "@mui/material";
 import {NavLink} from "react-router-dom";
 import {AuthContext} from "../App";
+import {validateEmail, validatePassword, validateUsername} from "../helper";
+import {Visibility, VisibilityOff} from "@mui/icons-material";
 
 export default function SignUp() {
     const auth = useContext(AuthContext)
+    const [usernameErrorMessage, setUsernameErrorMessage] = useState('');
+    const [emailErrorMessage, setEmailErrorMessage] = useState('');
+    const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
+    const [showPassword, setShowPassword] = useState(false);
 
     const submit = (e: any) => {
         e.preventDefault();
@@ -14,7 +20,15 @@ export default function SignUp() {
         const email = formData.get("email") as string;
         const password = formData.get("password") as string;
 
-        auth.signUp(username, email, password)
+        const usernameErrMsg = validateUsername(username)
+        setUsernameErrorMessage(usernameErrMsg)
+        const emailErrMsg = validateEmail(email)
+        setEmailErrorMessage(emailErrMsg)
+        const passwordErrMsg = validatePassword(password)
+        setPasswordErrorMessage(passwordErrMsg)
+
+        if (!usernameErrMsg && !emailErrMsg && !passwordErrMsg)
+            auth.signUp(username, email, password)
     };
 
     return <Grid container spacing={2} justifyContent="center" alignItems="center" style={{ height: '100vh' }}>
@@ -26,21 +40,43 @@ export default function SignUp() {
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
                         <TextField
-                            label="Name"
+                            label="Username"
+                            name={'username'}
                             fullWidth
+                            helperText={usernameErrorMessage}
+                            error={usernameErrorMessage !== ''}
                         />
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
                             label="Email"
+                            name={'email'}
                             fullWidth
+                            helperText={emailErrorMessage}
+                            error={emailErrorMessage !== ''}
                         />
                     </Grid>
                     <Grid item xs={12}>
                         <TextField
+                            type={showPassword ? 'text' : 'password'}
                             label="Password"
+                            name={'password'}
                             fullWidth
-                            type="password"
+                            helperText={passwordErrorMessage}
+                            error={passwordErrorMessage !== ''}
+                            InputProps={{
+                                endAdornment: (
+                                    <InputAdornment position="end">
+                                        <IconButton
+                                            aria-label="toggle password visibility"
+                                            onClick={() => setShowPassword(!showPassword)}
+                                            edge="end"
+                                        >
+                                            {showPassword ? <VisibilityOff/> : <Visibility/>}
+                                        </IconButton>
+                                    </InputAdornment>
+                                ),
+                            }}
                         />
                     </Grid>
                     <Grid item justifyContent={'center'} xs={12}>

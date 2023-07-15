@@ -12,9 +12,13 @@ export default function LogIn() {
 	const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
 	const [showPassword, setShowPassword] = useState(false);
 
+	const [showIncorrectCredentialsError, setShowIncorrectCredentialsError] = useState(false);
+
 
 	function submit(e: any) {
 		e.preventDefault();
+
+		let error = false;
 
 		const formData = new FormData(e.currentTarget);
 		const email = formData.get("email") as string;
@@ -23,7 +27,9 @@ export default function LogIn() {
 		setEmailErrorMessage(validateEmail(email))
 		setPasswordErrorMessage(validatePassword(password))
 
-		auth.logIn(email, password)
+		if (!emailErrorMessage && !passwordErrorMessage)
+			if (!auth.logIn(email, password))
+				setShowIncorrectCredentialsError(true)
 	}
 
 
@@ -66,6 +72,13 @@ export default function LogIn() {
 							}}
 						/>
 					</Grid>
+					{showIncorrectCredentialsError && (
+						<Grid item xs={12}>
+							<Typography color="error">
+								The email or password is incorrect.
+							</Typography>
+						</Grid>
+					)}
 					<Grid item xs={12}>
 						<Button variant="contained" fullWidth type="submit">
 							Login
