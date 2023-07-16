@@ -15,7 +15,7 @@ import {createTheme, ThemeProvider} from "@mui/material";
 export const TodoDataContext = createContext<{ tasks: TodoTaskType[], setTasks: Function }>(null!);
 
 type AuthContextType = {
-	user: any;
+	user: User | null;
 	logIn: (email: string, password: string) => boolean;
 	signOut: VoidFunction;
 	signUp: (username: string, email: string, password: string) => void;

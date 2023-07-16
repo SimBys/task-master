@@ -1,10 +1,12 @@
 import {NavLink} from "react-router-dom";
 import styles from "./Navbar.module.css";
-import {createRef, useEffect, useRef, useState} from "react";
+import {createRef, useContext, useEffect, useRef, useState} from "react";
 import ProfilePopup from "./ProfilePopup";
+import {AuthContext} from "../App";
 
 export default function Navbar() {
     const [profilePopupOpen, setProfilePopupOpen] = useState(false);
+    const auth = useContext(AuthContext);
 
     function selectTab(e: any) {
         underlineRef.current!.style.left = e.target.getBoundingClientRect().left + "px";
@@ -26,7 +28,7 @@ export default function Navbar() {
         <nav className={styles.navbar}>
             <NavLink ref={homeRef} onClick={selectTab} className={({ isActive}) => isActive ? styles.active : ""} to="">Task master</NavLink>
             <NavLink onClick={selectTab} className={({ isActive}) => isActive ? styles.active : ""} to="about">About</NavLink>
-            <div className={styles.profile} onClick={() => setProfilePopupOpen(true)}>S</div>
+            <div className={styles.profile} onClick={() => setProfilePopupOpen(true)}>{auth.user!.username[0]}</div>
             {profilePopupOpen && <ProfilePopup closeCB={() => setProfilePopupOpen(false)} />}
 
             <div ref={underlineRef} className={styles.underline}></div>
