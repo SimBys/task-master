@@ -1,17 +1,30 @@
-import {NavLink} from "react-router-dom";
-import {Button} from '@mui/material'
+import React from 'react';
+import { Button } from '@mui/material';
+import { Link } from 'react-router-dom';
+import styles from './Home.module.css';
 
-/**
- * @desc First page the user sees before logging in.
- */
+const Home: React.FC = () => {
 
+	return (
+		<div className={styles.container}>
+			<div className={styles.content}>
+				<h1>Welcome to My Landing Page</h1>
+				<p>Explore the amazing features and sign up now!</p>
+				<div className={styles.buttonContainer}>
+					<Link to="/login" className={styles.link}>
+						<Button variant="contained" color="primary" className={styles.button}>
+							Log In
+						</Button>
+					</Link>
+					<Link to="/signup" className={styles.link}>
+						<Button variant="contained" color="secondary" className={styles.button}>
+							Sign Up
+						</Button>
+					</Link>
+				</div>
+			</div>
+		</div>
+	);
+};
 
-export default function Home() {
-
-
-
-	return <nav>
-		<NavLink to={'login'}><Button>Log in</Button></NavLink>
-		<NavLink to={'sign-up'}><Button>Sign up</Button></NavLink>
-	</nav>
-}
+export default Home;

@@ -24,10 +24,12 @@ export default function LogIn() {
 		const email = formData.get("email") as string;
 		const password = formData.get("password") as string;
 
-		setEmailErrorMessage(validateEmail(email))
-		setPasswordErrorMessage(validatePassword(password))
+		const emailErrMsg = validateEmail(email);
+		setEmailErrorMessage(emailErrMsg);
+		const passwordErrMsg = validatePassword(password);
+		setPasswordErrorMessage(passwordErrMsg);
 
-		if (!emailErrorMessage && !passwordErrorMessage)
+		if (!emailErrMsg && !passwordErrMsg)
 			if (!auth.logIn(email, password))
 				setShowIncorrectCredentialsError(true)
 	}

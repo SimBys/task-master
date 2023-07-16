@@ -54,7 +54,6 @@ export default function App() {
 		},
 	});
 
-
 	return (
 		<ThemeProvider theme={theme}>
 			<AuthContext.Provider value={{user, logIn: _logIn, signOut: _signOut, signUp: _signUp}}>
