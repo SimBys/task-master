@@ -16,7 +16,7 @@ const Home: React.FC = () => {
 							Log In
 						</Button>
 					</Link>
-					<Link to="/signup" className={styles.link}>
+					<Link to="/sign-up" className={styles.link}>
 						<Button variant="contained" color="secondary" className={styles.button}>
 							Sign Up
 						</Button>

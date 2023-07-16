@@ -28,7 +28,7 @@ export default function Navbar() {
         <nav className={styles.navbar}>
             <NavLink ref={homeRef} onClick={selectTab} className={({ isActive}) => isActive ? styles.active : ""} to="">Task master</NavLink>
             <NavLink onClick={selectTab} className={({ isActive}) => isActive ? styles.active : ""} to="about">About</NavLink>
-            <div className={styles.profile} onClick={() => setProfilePopupOpen(true)}>{auth.user!.username[0]}</div>
+            <div className={styles.profile} onClick={() => setProfilePopupOpen(true)}>{auth.user!.username[0].toUpperCase()}</div>
             {profilePopupOpen && <ProfilePopup closeCB={() => setProfilePopupOpen(false)} />}
 
             <div ref={underlineRef} className={styles.underline}></div>

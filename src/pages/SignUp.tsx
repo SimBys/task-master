@@ -4,6 +4,7 @@ import {NavLink} from "react-router-dom";
 import {AuthContext} from "../App";
 import {validateEmail, validatePassword, validateUsername} from "../helper";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
+import {User} from "./auth";
 
 export default function SignUp() {
     const auth = useContext(AuthContext)
@@ -20,9 +21,12 @@ export default function SignUp() {
         const email = formData.get("email") as string;
         const password = formData.get("password") as string;
 
-        const usernameErrMsg = validateUsername(username)
+        const credentialsRaw = localStorage.getItem('credentials')
+        const credentials = credentialsRaw ? JSON.parse(credentialsRaw) as User[] : undefined
+
+        const usernameErrMsg = validateUsername(username, credentials)
         setUsernameErrorMessage(usernameErrMsg)
-        const emailErrMsg = validateEmail(email)
+        const emailErrMsg = validateEmail(email, credentials)
         setEmailErrorMessage(emailErrMsg)
         const passwordErrMsg = validatePassword(password)
         setPasswordErrorMessage(passwordErrMsg)
@@ -61,6 +65,7 @@ export default function SignUp() {
                             type={showPassword ? 'text' : 'password'}
                             label="Password"
                             name={'password'}
+                            autoComplete={passwordErrorMessage === '' ? 'on' : 'off'}
                             fullWidth
                             helperText={passwordErrorMessage}
                             error={passwordErrorMessage !== ''}
