@@ -23,11 +23,13 @@ type AuthContextType = {
 
 export const AuthContext = createContext<AuthContextType>(null!);
 
+const userRaw = localStorage.getItem('user')
+const userInit = userRaw ? JSON.parse(userRaw) : null
+
 export default function App() {
 	const [todoTasks, setTodoTasks] = useState<TodoTaskType[]>(loadTodoData() ?? []);
-	let [user, setUser] = useState<User | null>(null);
+	let [user, setUser] = useState<User | null>(userInit);
 	const navigate = useNavigate();
-
 
 	const _logIn = (email: string, password: string) => {
 		const res = logIn(email, password, setUser)

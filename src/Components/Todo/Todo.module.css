@@ -16,9 +16,5 @@
     overflow: auto;
     scroll-behavior: smooth;
     overflow-y: scroll;
-}
-
-.showCompletedTasksButton {
-    color: white;
-    border: white 1px solid;
+    border: 1px solid white;
 }

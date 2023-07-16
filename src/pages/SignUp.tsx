@@ -65,7 +65,6 @@ export default function SignUp() {
                             type={showPassword ? 'text' : 'password'}
                             label="Password"
                             name={'password'}
-                            autoComplete={passwordErrorMessage === '' ? 'on' : 'off'}
                             fullWidth
                             helperText={passwordErrorMessage}
                             error={passwordErrorMessage !== ''}

@@ -1,5 +1,10 @@
 import styles from './TodoTask.module.css'
-import {KeyboardEvent, useState} from "react";
+import React, {KeyboardEvent, useState} from "react";
+import StarIcon from '@mui/icons-material/Star';
+import DeleteIcon from '@mui/icons-material/Delete';
+import DoneIcon from '@mui/icons-material/Done';
+import BackIcon from '@mui/icons-material/ArrowUpward';
+import {Button, IconButton, ListItem, TextField} from "@mui/material";
 
 export type TodoTaskType = {
     id: number,
@@ -10,37 +15,30 @@ export type TodoTaskType = {
 }
 
 type Props = {
-    onValueChange?: (value: string) => void,
-    task?: TodoTaskType,
-    onComplete?: (id: number) => void,
-    onUncomplete?: (id: number) => void,
-    onDelete?: (id: number) => void,
+    task: TodoTaskType,
+    onToggleComplete: (id: number) => void,
+    onDelete: (id: number) => void,
     onToggleFavorite?: (id: number) => void,
-    isAddTask?: boolean,
 }
 
-/**
- * Todo task component
- * @param props.isAddTask - Whether the component is used for adding tasks
- */
 export default function TodoTask(props: Props) {
-    const [value, setValue] = useState(props.task?.value ?? '')
+    const [value, setValue] = useState(props.task.value ?? '')
 
-    const onInputKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-        if (!props.isAddTask || e.key !== 'Enter' || !value || !value.trim()) return
+    return <ListItem key={props.task.id ?? 'add task'} sx={{ p: '2px 0'}}>
+            {<IconButton style={{color: props.task.completed ? 'white' : 'greenyellow'}} onClick={() => props.onToggleComplete(props.task.id)}>
+                {props.task.completed ? <BackIcon /> : <DoneIcon />}</IconButton>}
 
-        props.onValueChange?.(value)
-        setValue('')
-    }
+            <TextField
+                fullWidth
+                value={value}
+                onChange={a => setValue(a.target.value)}
+                className={styles.input}
+                size='small'
+            />
 
-    return <div className={styles.container}>
-        {!props.isAddTask && <button className={styles.doneButton} onClick={() => props.task?.completed ?
-            props.onUncomplete?.(props.task.id) : props.onComplete?.(props.task?.id ?? -1)}>
-            {props.task?.completed ? 'Back' : 'Done'}</button>}
-        <input onKeyDown={onInputKeyDown} type="text" placeholder={props.isAddTask ? 'Add task' : ''} value={value}
-               onChange={a => setValue(a.target.value)}/>
-        {!props.isAddTask && <button className={props.task?.favorite ? styles.favorite : ''}
-            onClick={() => props.onToggleFavorite?.(props.task!.id)}>Favorite</button>}
-        {!props.isAddTask && <button className={styles.deleteButton} onClick={() => props.onDelete!(props.task!.id)}>Delete</button>}
-    </div>
+            {<IconButton style={{color: props.task.favorite ? 'gold' : 'white'}} onClick={() => props.onToggleFavorite?.(props.task.id)}>
+                <StarIcon /></IconButton>}
+            {<IconButton className={styles.deleteButton} onClick={() => props.onDelete(props.task.id)}>
+                <DeleteIcon color={'error'} /></IconButton>}
+    </ListItem>
 }

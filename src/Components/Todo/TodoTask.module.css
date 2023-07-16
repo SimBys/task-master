@@ -1,29 +1,22 @@
 .container {
-    border: .3px solid white;
     height: 30px;
     display: flex;
 }
 
 .container button {
-    all: unset;
-    cursor: pointer;
-    /*color: #232323;*/
-    /*font-weight: bolder;*/
-    /*border: 1px solid black;*/
-    user-select: none;
+    /*all: unset;*/
+    /*user-select: none;*/
 }
 
-.doneButton {
-    background-color: greenyellow;
-}
-
-input {
-    all: unset;
-    flex: 1;
+.input {
+    /*all: unset;*/
+    /*border: 1px solid #595959;*/
+    /*flex: 1;*/
+    /*background-color: #1a1a1a;*/
 }
 
 .deleteButton {
-    background-color: red;
+    color: red;
 }
 
 .favorite {
