@@ -27,24 +27,7 @@
 	text-decoration: none;
 }
 
-.navbar a:hover:not(.active), .profile:hover {
-	background-color: #474747;
-}
-
 .navbar .logo {
 	font-size: 1.5rem;
 	font-weight: bold;
-}
-
-.profile {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	position: absolute;
-	right: 0;
-	width: 55px; /* Set the width to the desired size */
-	height: 55px; /* Set the height to the same size as the width */
-	border-radius: 50%;
-	border: 0.5px solid #fff;
-	cursor: pointer;
 }

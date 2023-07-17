@@ -1,22 +1,38 @@
-import React, {useContext} from "react";
-import {AuthContext} from "../App";
-import {Box, Fade, Popper} from "@mui/material";
+import React, { useContext, useState, useEffect } from "react";
+import { AuthContext } from "../App";
+import {Box, Fade, Popper, IconButton, Paper, Typography, Button, Grid} from "@mui/material";
+import styles from "./Navbar.module.css";
 
-type Props = {
-	closeCB: Function
-}
-
-export default function ProfilePopup(props: Props) {
+export default function ProfilePopup() {
 	const auth = useContext(AuthContext);
+	const [open, setOpen] = useState(false);
+	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+
+	useEffect(() => {
+		const handleClose = (event: MouseEvent) => {
+			if (anchorEl?.contains(event.target as Node)) {
+				return;
+			}
+			setOpen(false);
+		};
+
+		const handleEscape = (event: KeyboardEvent) => {
+			if (event.key === "Escape") setOpen(false);
+		};
+
+		document.addEventListener("mouseup", handleClose);
+		document.addEventListener("keydown", handleEscape);
+
+		return () => {
+			document.removeEventListener("mouseup", handleClose);
+			document.removeEventListener("keydown", handleEscape);
+		};
+	}, [anchorEl]);
 
 	function logOut() {
-		props.closeCB()
-		auth.signOut()
+		setOpen(false);
+		auth.signOut();
 	}
-
-
-	const [open, setOpen] = React.useState(false);
-	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
 	const handleClick = (event: React.MouseEvent<HTMLElement>) => {
 		setAnchorEl(event.currentTarget);
@@ -24,31 +40,34 @@ export default function ProfilePopup(props: Props) {
 	};
 
 	const canBeOpen = open && Boolean(anchorEl);
-	const id = canBeOpen ? 'transition-popper' : undefined;
+	const id = canBeOpen ? "transition-popper" : undefined;
 
 	return (
 		<div>
-			<button aria-describedby={id} type="button" onClick={handleClick}>
-				Toggle Popper
-			</button>
+			<IconButton
+				sx={{ right: 0, position: "absolute", border: 1, height: 1, width: '55.5px' }}
+				aria-describedby={id}
+				className={styles.profile}
+				onClick={handleClick}
+			>
+				{auth.user!.username[0].toUpperCase()}
+			</IconButton>
 			<Popper id={id} open={open} anchorEl={anchorEl} transition>
 				{({ TransitionProps }) => (
-					<Fade {...TransitionProps} timeout={350}>
-						<Box sx={{ border: 1, p: 1, bgcolor: 'background.paper' }}>
-							The content of the Popper.
-						</Box>
+					<Fade {...TransitionProps} timeout={150}>
+						<Paper sx={{ p: 2, border: 1 }} elevation={3}>
+							<Typography variant={'h5'}>
+								Hello, {auth.user!.username}!
+							</Typography>
+							<Grid container justifyContent="center" marginTop={4}>
+								<Grid item>
+									<Button variant={'contained'} onClick={logOut}>Log out</Button>
+								</Grid>
+							</Grid>
+						</Paper>
 					</Fade>
 				)}
 			</Popper>
 		</div>
-
-		// <div className={styles.plane} onClick={() => props.closeCB()}>
-		// 	<div style={{top: 57}} className={styles.container} onClick={e => e.stopPropagation()}>
-		// 		<h3>Hello, {auth.user!.username}!</h3>
-		//
-		// 		<button onClick={logOut}>Log out</button>
-		//
-		// 	</div>
-		// </div>
-	)
+	);
 }

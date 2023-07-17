@@ -57,7 +57,7 @@ export default function Todo() {
     }
 
     return <Container maxWidth="sm" sx={{ mt: 4 }}>
-        <Paper elevation={3} sx={{ p: 2 }}>
+        <Paper elevation={3} sx={{ p: 2, border: 1 }}>
             {/*Add task*/}
             <TextField
                 autoComplete={"off"}
@@ -66,7 +66,7 @@ export default function Todo() {
                 fullWidth
             />
 
-            <Container sx={{ overflow: 'auto', maxHeight: '60vh', paddingX: '0!important'}}>
+            <Container sx={{ overflow: 'auto', maxHeight: '65vh', paddingX: '0!important'}}>
                 {/*Tasks*/}
                 <List>
                     {tasks.filter(a => !a.completed)

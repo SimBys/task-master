@@ -1,14 +1,3 @@
-/*.container {*/
-/*    position: relative;*/
-/*    height: 100vh;*/
-/*    background-image: url('../bg.jpg');*/
-/*    background-size: cover;*/
-/*    background-position: center;*/
-/*    display: flex;*/
-/*    justify-content: center;*/
-/*    align-items: center;*/
-/*}*/
-
 .container {
     width: 100%;
     height: 100vh;
@@ -16,13 +5,12 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    background-image: url('../bg.jpg');
+    background-image: url('../../public/Todo.png');
     background-size: cover;
     background-position: center;
     position: relative;
 }
 
-/* Adjust the blur strength as needed */
 .container::before {
     content: "";
     position: absolute;
@@ -30,8 +18,8 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.3); /* You can adjust the alpha value to control the blur intensity */
-    backdrop-filter: blur(3px); /* The blur strength (adjust as needed) */
+    background-color: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(3px);
 }
 
 .content {
