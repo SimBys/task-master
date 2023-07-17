@@ -14,7 +14,11 @@ export default function Todo() {
 
     const onToggleTaskComplete = (id: number) => setTasks(tasks.map(a => a.id === id ? {...a, completed: !a.completed} : a))
 
-    const addTask = (value: string) => setTasks([...tasks, {value, id: tasks.length + 1}])
+    const addTask = (value: string) => {
+        const lastTask = tasks.at(-1)
+        const id = lastTask ? lastTask.id + 1 : 0
+        return setTasks([...tasks, {value, id: id}]);
+    }
 
     const deleteTask = (id: number) => setTasks(tasks.filter(a => a.id !== id))
 
@@ -34,7 +38,10 @@ export default function Todo() {
 
     function addTaskKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
         if (e.key === 'Enter') {
-            e.currentTarget.blur()
+            const value = e.currentTarget.value.trim()
+            if (value !== '')
+                addTask(value)
+            e.currentTarget.value = ''
             return
         }
 
