@@ -1,42 +1,30 @@
-import React, {useContext, useEffect, useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Button, Grid, IconButton, InputAdornment, TextField, Typography,} from '@mui/material';
-import {NavLink, useNavigate} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 import {AuthContext} from "../App";
 import {Visibility, VisibilityOff} from '@mui/icons-material';
-import {validateEmail, validatePassword} from "../helper";
 
 
 export default function LogIn() {
 	const auth = useContext(AuthContext)
-	const navigate = useNavigate()
-	const [emailErrorMessage, setEmailErrorMessage] = useState('');
-	const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
 	const [showPassword, setShowPassword] = useState(false);
-
 	const [showIncorrectCredentialsError, setShowIncorrectCredentialsError] = useState(false);
 
+
 	if (auth.user) {
-		navigate('/')
+		window.location.href = '/'
 		return <></>
 	}
 
 	function submit(e: any) {
 		e.preventDefault();
 
-		let error = false;
-
 		const formData = new FormData(e.currentTarget);
-		const email = formData.get("email") as string;
+		const usernameOrEmail = formData.get("name") as string;
 		const password = formData.get("password") as string;
 
-		const emailErrMsg = validateEmail(email);
-		setEmailErrorMessage(emailErrMsg);
-		const passwordErrMsg = validatePassword(password);
-		setPasswordErrorMessage(passwordErrMsg);
-
-		if (!emailErrMsg && !passwordErrMsg)
-			if (!auth.logIn(email, password))
-				setShowIncorrectCredentialsError(true)
+		if (!auth.logIn(usernameOrEmail, password))
+			setShowIncorrectCredentialsError(true)
 	}
 
 
@@ -49,11 +37,9 @@ export default function LogIn() {
 				<Grid container spacing={2}>
 					<Grid item xs={12}>
 						<TextField
-							label="Email"
-							name={'email'}
+							label="Username or Email"
+							name={'name'}
 							fullWidth
-							helperText={emailErrorMessage}
-							error={emailErrorMessage !== ''}
 						/>
 					</Grid>
 					<Grid item xs={12}>
@@ -62,8 +48,6 @@ export default function LogIn() {
 							label="Password"
 							name={'password'}
 							fullWidth
-							helperText={passwordErrorMessage}
-							error={passwordErrorMessage !== ''}
 							InputProps={{
 								endAdornment: (
 									<InputAdornment position="end">

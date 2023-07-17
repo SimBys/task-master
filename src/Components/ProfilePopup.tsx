@@ -45,7 +45,7 @@ export default function ProfilePopup() {
 	return (
 		<div>
 			<IconButton
-				sx={{ right: 0, position: "absolute", border: 1, height: 1, width: '55.5px' }}
+				sx={{ right: '6px', position: "absolute", border: 1, height: 1, width: '55.5px' }}
 				aria-describedby={id}
 				className={styles.profile}
 				onClick={handleClick}

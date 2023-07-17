@@ -16,7 +16,7 @@ export const TodoDataContext = createContext<{ tasks: TodoTaskType[], setTasks: 
 
 type AuthContextType = {
 	user: User | null;
-	logIn: (email: string, password: string) => boolean;
+	logIn: (usernameOrEmail: string, password: string) => boolean;
 	signOut: VoidFunction;
 	signUp: (username: string, email: string, password: string) => void;
 }
@@ -31,8 +31,8 @@ export default function App() {
 	let [user, setUser] = useState<User | null>(userInit);
 	const navigate = useNavigate();
 
-	const _logIn = (email: string, password: string) => {
-		const res = logIn(email, password, setUser)
+	const _logIn = (usernameOrEmail: string, password: string) => {
+		const res = logIn(usernameOrEmail, password, setUser)
 		if (res)
 			navigate('')
 

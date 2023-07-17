@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, {useEffect, useState} from "react";
 import ReactMarkdown from "react-markdown";
+import {Box} from "@mui/material";
 
 export default function About() {
     const [readmeContent, setReadmeContent] = useState("");
@@ -15,8 +16,8 @@ export default function About() {
     }, []);
 
     return (
-        <div>
+        <Box p={4}>
             <ReactMarkdown>{readmeContent}</ReactMarkdown>
-        </div>
+        </Box>
     );
 }

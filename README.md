@@ -27,4 +27,4 @@ Task Master is a web application built using React with Material-UI (MUI) that h
 Clone the repo and run `npm install` or `yarn install`.
 Run `npm start` or `yarn start` to start the local development server, by default at localhost:3000
 
-![Todo](public/Todo.png)
+![Todo preview image](public/Todo.png)

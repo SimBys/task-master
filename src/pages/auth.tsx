@@ -12,7 +12,7 @@ type Credential = User & {
  * Authenticates the user
  * @returns whether the user is authenticated or not
  */
-export function logIn(email: string, password: string, setUser: (user: User) => void) {
+export function logIn(usernameOrEmail: string, password: string, setUser: (user: User) => void) {
     const credentialsInJSON = localStorage.getItem('credentials')
 
     if (credentialsInJSON == null)
@@ -21,10 +21,11 @@ export function logIn(email: string, password: string, setUser: (user: User) => 
     const credentials: Credential[] = JSON.parse(credentialsInJSON)
 
     for (let i = 0; i < credentials.length; i++)
-        if (credentials[i].email === email && credentials[i].password === password) {
+        if ((credentials[i].username === usernameOrEmail || credentials[i].email === usernameOrEmail)
+            && credentials[i].password === password) {
             const user: User = {
                 username: credentials[i].username,
-                email: email,
+                email: credentials[i].email,
             }
             localStorage.setItem('user', JSON.stringify(user))
             setUser(user)
