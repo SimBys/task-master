@@ -65,7 +65,7 @@ export default function TodoTask(props: Props) {
                 inputProps={{ onBlur: onBlur, onKeyDown: editKeyDown }}
             />
 
-            {<IconButton style={{color: props.task.favorite ? 'gold' : 'white'}} onClick={() => props.onToggleFavorite?.(props.task.id)}>
+            {!props.task.completed && <IconButton style={{color: props.task.favorite ? 'gold' : 'white'}} onClick={() => props.onToggleFavorite?.(props.task.id)}>
                 <StarIcon /></IconButton>}
             {<IconButton className={styles.deleteButton} onClick={() => props.onDelete(props.task.id)}>
                 <DeleteIcon color={'error'} /></IconButton>}
