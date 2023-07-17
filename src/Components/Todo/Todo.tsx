@@ -1,5 +1,5 @@
 import TodoTask from "./TodoTask";
-import {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import {TodoDataContext} from "../../App";
 import {saveTodoData} from "../../DataController";
 import {Collapse, Container, List, ListItemButton, ListItemIcon, ListItemText, Paper, TextField} from "@mui/material";
@@ -8,10 +8,7 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 
 export default function Todo() {
     const [showCompleted, setShowCompleted] = useState(false);
-    const ctx = useContext(TodoDataContext)
-
-    const tasks = ctx.tasks
-    const setTasks = ctx.setTasks
+    const { tasks, setTasks } = useContext(TodoDataContext);
 
     useEffect(() => saveTodoData(tasks), [tasks]);
 
@@ -23,6 +20,30 @@ export default function Todo() {
 
     const toggleFavorite = (id: number) => setTasks(tasks.map(a => a.id === id ? {...a, favorite: !a.favorite} : a))
 
+    let dontAddTask = false
+    function onBlur(e: React.FocusEvent<HTMLInputElement>) {
+        if (dontAddTask) {
+            dontAddTask = false
+            return
+        }
+        const value = e.currentTarget.value.trim()
+        if (value !== '')
+            addTask(value)
+        e.currentTarget.value = ''
+    }
+
+    function addTaskKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
+        if (e.key === 'Enter') {
+            e.currentTarget.blur()
+            return
+        }
+
+        if (e.key === 'Escape') {
+            e.currentTarget.value = ''
+            dontAddTask = true
+            e.currentTarget.blur()
+        }
+    }
 
 
     return <Container maxWidth="sm" sx={{ mt: 4 }}>
@@ -30,7 +51,7 @@ export default function Todo() {
             {/*Add task*/}
             <TextField
                 autoComplete={"off"}
-                onBlur={(e) => addTask(e.target.value)}
+                inputProps={{ onBlur: onBlur, onKeyDown: addTaskKeyDown }}
                 label="Add a new task"
                 fullWidth
             />
