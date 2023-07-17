@@ -45,6 +45,9 @@ export default function Todo() {
         }
     }
 
+    function onEdit(id: number, value: string) {
+        setTasks(tasks.map(a => a.id === id ? {...a, value} : a))
+    }
 
     return <Container maxWidth="sm" sx={{ mt: 4 }}>
         <Paper elevation={3} sx={{ p: 2 }}>
@@ -62,7 +65,7 @@ export default function Todo() {
                     {tasks.filter(a => !a.completed)
                         .sort((a, b) => a.favorite ? 0 : 1)
                         .map((task, index) => <TodoTask key={task.id} task={task}
-                            onToggleComplete={onToggleTaskComplete} onDelete={deleteTask} onToggleFavorite={toggleFavorite}
+                            onToggleComplete={onToggleTaskComplete} onDelete={deleteTask} onEdit={onEdit} onToggleFavorite={toggleFavorite}
                         />)}
                 </List>
                 {/*Completed tasks*/}
@@ -76,7 +79,7 @@ export default function Todo() {
                     <Collapse in={showCompleted} timeout={200} >
                         {tasks.filter(a => a.completed).reverse().map((task, index) =>
                             <TodoTask key={task.id} task={task} onToggleComplete={onToggleTaskComplete}
-                                      onDelete={deleteTask}/>)}
+                                      onDelete={deleteTask} onEdit={onEdit}/>)}
                     </Collapse>
                 </List>
 

@@ -18,11 +18,38 @@ type Props = {
     task: TodoTaskType,
     onToggleComplete: (id: number) => void,
     onDelete: (id: number) => void,
+    onEdit: (id: number, value: string) => void,
     onToggleFavorite?: (id: number) => void,
 }
 
 export default function TodoTask(props: Props) {
     const [value, setValue] = useState(props.task.value ?? '')
+
+    let dontEditTask = false
+    function onBlur(e: React.FocusEvent<HTMLInputElement>) {
+        if (dontEditTask) {
+            dontEditTask = false
+            return
+        }
+        const value = e.currentTarget.value.trim()
+        if (value !== '')
+            props.onEdit(props.task.id, value)
+        e.currentTarget.value = ''
+    }
+
+    function editKeyDown(e: KeyboardEvent<HTMLInputElement>) {
+        if (e.key === 'Enter') {
+            e.currentTarget.blur()
+            return
+        }
+
+        if (e.key === 'Escape') {
+            e.currentTarget.value = ''
+            dontEditTask = true
+            e.currentTarget.blur()
+        }
+    }
+
 
     return <ListItem key={props.task.id ?? 'add task'} sx={{ p: '2px 0'}}>
             {<IconButton style={{color: props.task.completed ? 'white' : 'greenyellow'}} onClick={() => props.onToggleComplete(props.task.id)}>
@@ -34,6 +61,8 @@ export default function TodoTask(props: Props) {
                 onChange={a => setValue(a.target.value)}
                 className={styles.input}
                 size='small'
+                autoComplete={"off"}
+                inputProps={{ onBlur: onBlur, onKeyDown: editKeyDown }}
             />
 
             {<IconButton style={{color: props.task.favorite ? 'gold' : 'white'}} onClick={() => props.onToggleFavorite?.(props.task.id)}>

@@ -1,19 +1,24 @@
-import React, {useContext, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {Button, Grid, IconButton, InputAdornment, TextField, Typography,} from '@mui/material';
-import {NavLink} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import {AuthContext} from "../App";
 import {Visibility, VisibilityOff} from '@mui/icons-material';
-import {validatePassword, validateEmail} from "../helper";
+import {validateEmail, validatePassword} from "../helper";
 
 
 export default function LogIn() {
 	const auth = useContext(AuthContext)
+	const navigate = useNavigate()
 	const [emailErrorMessage, setEmailErrorMessage] = useState('');
 	const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
 	const [showPassword, setShowPassword] = useState(false);
 
 	const [showIncorrectCredentialsError, setShowIncorrectCredentialsError] = useState(false);
 
+	if (auth.user) {
+		navigate('/')
+		return <></>
+	}
 
 	function submit(e: any) {
 		e.preventDefault();

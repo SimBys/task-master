@@ -1,6 +1,6 @@
 import React, {useContext, useState} from "react";
 import {Button, Grid, IconButton, InputAdornment, TextField, Typography} from "@mui/material";
-import {NavLink} from "react-router-dom";
+import {NavLink, useNavigate} from "react-router-dom";
 import {AuthContext} from "../App";
 import {validateEmail, validatePassword, validateUsername} from "../helper";
 import {Visibility, VisibilityOff} from "@mui/icons-material";
@@ -8,10 +8,16 @@ import {User} from "./auth";
 
 export default function SignUp() {
     const auth = useContext(AuthContext)
+    const navigate = useNavigate()
     const [usernameErrorMessage, setUsernameErrorMessage] = useState('');
     const [emailErrorMessage, setEmailErrorMessage] = useState('');
     const [passwordErrorMessage, setPasswordErrorMessage] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+
+    if (auth.user) {
+        navigate('/')
+        return <></>
+    }
 
     const submit = (e: any) => {
         e.preventDefault();
