@@ -1,6 +1,6 @@
-import TodoTask from "./TodoTask";
-import React, {useContext, useEffect, useState} from "react";
-import {TodoDataContext} from "../../App";
+import TodoTask, {TodoTaskType} from "./TodoTask";
+import React, {useContext, useState} from "react";
+import {AuthContext, TodoDataContext} from "../../App";
 import {saveTodoData} from "../../DataController";
 import {Collapse, Container, List, ListItemButton, ListItemIcon, ListItemText, Paper, TextField} from "@mui/material";
 import ExpandMore from '@mui/icons-material/ExpandMore';
@@ -9,20 +9,35 @@ import ExpandLess from '@mui/icons-material/ExpandLess';
 export default function Todo() {
     const [showCompleted, setShowCompleted] = useState(false);
     const { tasks, setTasks } = useContext(TodoDataContext);
+    const {user} = useContext(AuthContext);
 
-    useEffect(() => saveTodoData(tasks), [tasks]);
+    const save = (newData: TodoTaskType[]) => saveTodoData({todos: newData, username: user!.username})
 
-    const onToggleTaskComplete = (id: number) => setTasks(tasks.map(a => a.id === id ? {...a, completed: !a.completed} : a))
+    const onToggleTaskComplete = (id: number) => {
+        const newData = tasks.map(a => a.id === id ? {...a, completed: !a.completed} : a)
+        save(newData)
+        setTasks(newData);
+    }
 
     const addTask = (value: string) => {
         const lastTask = tasks.at(-1)
         const id = lastTask ? lastTask.id + 1 : 0
-        return setTasks([...tasks, {value, id: id}]);
+        const newData = [...tasks, {value, id: id}]
+        save(newData)
+        setTasks(newData);
     }
 
-    const deleteTask = (id: number) => setTasks(tasks.filter(a => a.id !== id))
+    const deleteTask = (id: number) => {
+        const newData = tasks.filter(a => a.id !== id)
+        save(newData)
+        setTasks(newData);
+    }
 
-    const toggleFavorite = (id: number) => setTasks(tasks.map(a => a.id === id ? {...a, favorite: !a.favorite} : a))
+    const toggleFavorite = (id: number) => {
+        const newData = tasks.map(a => a.id === id ? {...a, favorite: !a.favorite} : a)
+        save(newData)
+        setTasks(newData);
+    }
 
     let dontAddTask = false
     function onBlur(e: React.FocusEvent<HTMLInputElement>) {
@@ -53,7 +68,9 @@ export default function Todo() {
     }
 
     function onEdit(id: number, value: string) {
-        setTasks(tasks.map(a => a.id === id ? {...a, value} : a))
+        const newData = tasks.map(a => a.id === id ? {...a, value} : a)
+        save(newData)
+        setTasks(newData);
     }
 
     return <Container maxWidth="sm" sx={{ mt: 4 }}>

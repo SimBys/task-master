@@ -24,25 +24,34 @@ type AuthContextType = {
 export const AuthContext = createContext<AuthContextType>(null!);
 
 const userRaw = localStorage.getItem('user')
-const userInit = userRaw ? JSON.parse(userRaw) : null
+const userInit: User | null = userRaw ? JSON.parse(userRaw) : null
 
 export default function App() {
-	const [todoTasks, setTodoTasks] = useState<TodoTaskType[]>(loadTodoData() ?? []);
-	let [user, setUser] = useState<User | null>(userInit);
+	const [todoTasks, setTodoTasks] =
+		useState<TodoTaskType[]>(userInit ? loadTodoData(userInit.username) : []);
+	let [user, setUser] = useState(userInit);
 	const navigate = useNavigate();
 
+	useEffect(() => {
+		if (user)
+			setTodoTasks(loadTodoData(user.username))
+	}, [user]);
+
+
 	const _logIn = (usernameOrEmail: string, password: string) => {
-		const res = logIn(usernameOrEmail, password, setUser)
-		if (res)
+		const result = logIn(usernameOrEmail, password, setUser)
+
+		if (result)
 			navigate('')
 
-		return res
+		return result
 	}
 
 	function _signOut() {
 		navigate('')
 		setUser(null)
 		signOut()
+		setTodoTasks([])
 	}
 
 	const _signUp = (username: string, email: string, password: string) => {
@@ -98,9 +107,7 @@ const RouterOutlet = (props: { user: any }) => {
 			</Helmet>
 			<Routes>
 				<Route path="" element={props.user ? <Dashboard/> : <Home/>}/>
-				<Route path="login" element={
-					<LogIn/>
-				}/>
+				<Route path="login" element={<LogIn/>}/>
 				<Route path="sign-up" element={<SignUp/>}/>
 				<Route path="about" element={<About/>}/>
 			</Routes>

@@ -66,7 +66,7 @@ export default function LogIn() {
 					{showIncorrectCredentialsError && (
 						<Grid item xs={12}>
 							<Typography color="error">
-								The email or password is incorrect.
+								The username, email or password is incorrect.
 							</Typography>
 						</Grid>
 					)}
