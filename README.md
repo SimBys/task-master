@@ -29,5 +29,5 @@ Task Master is a powerful todo list web application built using React with Mater
 Clone the repo and run `npm install` or `yarn install`.
 Run `npm start` or `yarn start` to start the local development server, by default at localhost:3000
 
-**Preview:**
+## Preview
 ![Todo preview image](public/Todo.png)
