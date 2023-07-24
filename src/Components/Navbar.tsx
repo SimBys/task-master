@@ -13,12 +13,14 @@ export default function Navbar() {
     }
 
     const homeRef = createRef<HTMLAnchorElement>()
+    const aboutRef = createRef<HTMLAnchorElement>()
     const underlineRef = createRef<HTMLDivElement>()
 
 
     useEffect(() => {
-        underlineRef.current!.style.width = homeRef.current!.getBoundingClientRect().width + "px";
-        underlineRef.current!.style.left = homeRef.current!.getBoundingClientRect().left + "px";
+        const activeRef = window.location.pathname === "/about" ? aboutRef : homeRef;
+        underlineRef.current!.style.width = activeRef.current!.getBoundingClientRect().width + "px";
+        underlineRef.current!.style.left = activeRef.current!.getBoundingClientRect().left + "px";
     }, [])
 
 
@@ -26,7 +28,7 @@ export default function Navbar() {
     return (
         <nav className={styles.navbar}>
             <NavLink ref={homeRef} onClick={selectTab} className={({ isActive}) => isActive ? styles.active : ""} to="">Task master</NavLink>
-            <NavLink onClick={selectTab} className={({ isActive}) => isActive ? styles.active : ""} to="about">About</NavLink>
+            <NavLink ref={aboutRef} onClick={selectTab} className={({ isActive}) => isActive ? styles.active : ""} to="about">About</NavLink>
             <ProfilePopup />
 
             <div ref={underlineRef} className={styles.underline}></div>
