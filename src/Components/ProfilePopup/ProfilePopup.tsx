@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
-import { AuthContext } from "../App";
+import { AuthContext } from "../../App";
 import {Box, Fade, Popper, IconButton, Paper, Typography, Button, Grid} from "@mui/material";
-import styles from "./Navbar.module.css";
+import styles from "../Navbar/Navbar.module.css";
 
 export default function ProfilePopup() {
 	const auth = useContext(AuthContext);

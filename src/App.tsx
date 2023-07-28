@@ -1,5 +1,5 @@
 import {Route, Routes, useLocation, useNavigate} from "react-router-dom";
-import Navbar from "./Components/Navbar";
+import Navbar from "./Components/Navbar/Navbar";
 import Dashboard from "./pages/Dashboard";
 import {createContext, useEffect, useState} from "react";
 import About from "./pages/About";

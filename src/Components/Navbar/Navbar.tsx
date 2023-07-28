@@ -1,8 +1,8 @@
 import {NavLink} from "react-router-dom";
 import styles from "./Navbar.module.css";
 import {createRef, useContext, useEffect, useRef, useState} from "react";
-import ProfilePopup from "./ProfilePopup";
-import {AuthContext} from "../App";
+import ProfilePopup from "../ProfilePopup/ProfilePopup";
+import {AuthContext} from "../../App";
 
 export default function Navbar() {
     const auth = useContext(AuthContext);

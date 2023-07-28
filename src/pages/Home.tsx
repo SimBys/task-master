@@ -7,7 +7,7 @@ export default function Home() {
 
 	return (
 		<div className={styles.container}>
-			<Paper sx={{ zIndex: 1, p: 4, borderRadius: 5, border: 1 }}>
+			<Paper elevation={10} sx={{ zIndex: 1, p: 4, borderRadius: 5 }}>
 				<Grid container alignItems="center" justifyContent="center" spacing={2}>
 					<Grid item>
 						<Typography sx={{typography: { sm: 'h3', xs: 'h5'}}}>Welcome to Task master</Typography>
@@ -21,14 +21,14 @@ export default function Home() {
 				<Grid container alignItems="center" justifyContent="center" mt={2}>
 					<Grid item>
 						<Link to="/login" className={styles.link}>
-							<Button variant="contained" color="primary" className={styles.button}>
+							<Button variant="contained" color="primary" className={styles.buttons}>
 								Log In
 							</Button>
 						</Link>
 					</Grid>
 					<Grid item ml={3}>
 						<Link to="/sign-up" className={styles.link}>
-							<Button variant="contained" color="secondary" className={styles.button}>
+							<Button variant="contained" color="secondary" className={styles.buttons}>
 								Sign Up
 							</Button>
 						</Link>
