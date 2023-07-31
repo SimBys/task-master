@@ -2,27 +2,35 @@
 
 Task Master is a powerful todo list web application built using React with Material-UI (MUI).
 
+<span style="color: red;">Note:</span>
+_This project, TaskMaster, is a demonstration application created to showcase my React skills. It is not intended for production use, and certain features may be simplified or omitted._
+
 ### Features
-- **Material-UI** for styling
-- **react-router-dom** for routing
-- **Local storage** for storing the todo list
-- **GitHub API** for fetching the README.md file from the repository
-- **Navigation bar** with **animation**
-- **Sign up** and **log in** forms
-- **Responsive design**
+- **Navigation**: Seamless page transitions with react-router-dom.
+- **User Authentication**: Securely manage user accounts with sign-up and log-in forms.
+- **Persistent Data Storage**: Utilizes local storage to retain todo list data even after closing the app.
+- **GitHub Integration**: Fetches README.md from the GitHub repository for up-to-date info.
+- **Stylish Design**: Modern appearance using Material-UI components.
+- **Dynamic Navigation Bar**: Smooth animations enhance user interaction.
+- **Responsive Design**: Adapts to various screen sizes for a consistent experience.
 
 ### Pages
-- **Home (`/`):** Landing page - preview of the app, sign up, log in buttons
-- **Dashboard (`/`):** Shown after logging in, contains the todo list
-- **About (`/About`):** Displays the README.md file fetched from the GitHub repository
-- **Log in (`/login`):** Log in form
-- **Sign up (`/sign-up`):** Sign up form
+- **Home (url `/`):** The landing page provides a preview of the app and offers sign-up and log-in buttons.
+- **Dashboard (url `/`):** After logging in, users are directed to the dashboard, which displays the todo list.
+- **About (url `/About`):** This page dynamically fetches and displays the README.md file from the GitHub repository, keeping users informed about the latest updates.
+- **Log in (url `/login`):** Log-in form
+- **Sign up (url `/sign-up`):** Sign-up form
 
-### The todo list
+### Todo List Functionality
 - **Add task:** Add a new task to the list
 - **Delete task:** Delete a task from the list
 - **Un/complete task:** Mark a task as un/completed
 - **Un/favorite task:** Mark a task as (not) favorite
+
+### Local Storage
+- Credentials of all users are stored in an item with key `credentials`
+- Currently logged in user is stored in an item with key `user`
+- Todo list data of all users is stored in an item with key `data`
 
 ## Development setup
 
@@ -31,3 +39,6 @@ Run `npm start` or `yarn start` to start the local development server, by defaul
 
 ## Preview
 ![Todo preview image](public/Todo.png)
+
+Enjoy using Task Master to manage your tasks effectively and stay organized effortlessly! If you encounter any issues or have suggestions, feel free to contribute or raise an issue on the GitHub repository. Happy tasking!
+

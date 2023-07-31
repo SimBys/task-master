@@ -1,6 +1,6 @@
 import {TodoTaskType} from "./Components/Todo/TodoTask";
 
-const todoDataKey = 'todo'
+const todoDataKey = 'data'
 
 export const loadTodoData = (username: string): TodoTaskType[] => {
     const allDataRaw = localStorage.getItem(todoDataKey)
