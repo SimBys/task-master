@@ -2,6 +2,8 @@
 
 Task Master is a powerful todo list web application built using React with Material-UI (MUI).
 
+**Check it out here: https://simbys.github.io/task-master/**
+
 <span style="color: red;">Note:</span>
 _This project, TaskMaster, is a demonstration application created to showcase my React skills. It is not intended for production use, and certain features may be simplified or omitted._
 
