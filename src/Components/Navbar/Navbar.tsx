@@ -1,11 +1,9 @@
 import {NavLink} from "react-router-dom";
 import styles from "./Navbar.module.css";
-import {createRef, useContext, useEffect, useRef, useState} from "react";
+import {createRef, useEffect} from "react";
 import ProfilePopup from "../ProfilePopup/ProfilePopup";
-import {AuthContext} from "../../App";
 
 export default function Navbar() {
-    const auth = useContext(AuthContext);
 
     function selectTab(e: any) {
         underlineRef.current!.style.left = e.target.getBoundingClientRect().left + "px";

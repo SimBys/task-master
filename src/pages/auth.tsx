@@ -7,7 +7,6 @@ type Credential = User & {
     password: string
 }
 
-
 /**
  * Authenticates the user
  * @returns whether the user is authenticated or not
@@ -20,6 +19,7 @@ export function logIn(usernameOrEmail: string, password: string, setUser: (user:
 
     const credentials: Credential[] = JSON.parse(credentialsInJSON)
 
+    // Check if the credentials are valid
     for (let i = 0; i < credentials.length; i++)
         if ((credentials[i].username === usernameOrEmail || credentials[i].email === usernameOrEmail)
             && credentials[i].password === password) {

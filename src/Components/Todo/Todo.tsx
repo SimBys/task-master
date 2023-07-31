@@ -106,10 +106,7 @@ export default function Todo() {
                                       onDelete={deleteTask} onEdit={onEdit}/>)}
                     </Collapse>
                 </List>
-
-
             </Container>
-
         </Paper>
     </Container>
 }

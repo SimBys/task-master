@@ -1,10 +1,9 @@
-import styles from './TodoTask.module.css'
 import React, {KeyboardEvent, useState} from "react";
 import StarIcon from '@mui/icons-material/Star';
 import DeleteIcon from '@mui/icons-material/Delete';
 import DoneIcon from '@mui/icons-material/Done';
 import BackIcon from '@mui/icons-material/ArrowUpward';
-import {Button, IconButton, ListItem, TextField} from "@mui/material";
+import {IconButton, ListItem, TextField} from "@mui/material";
 
 export type TodoTaskType = {
     id: number,
@@ -52,22 +51,23 @@ export default function TodoTask(props: Props) {
 
 
     return <ListItem key={props.task.id ?? 'add task'} sx={{ p: '2px 0'}}>
-            {<IconButton style={{color: props.task.completed ? 'white' : 'greenyellow'}} onClick={() => props.onToggleComplete(props.task.id)}>
+            {<IconButton style={{color: props.task.completed ? 'white' : 'greenyellow'}}
+                onClick={() => props.onToggleComplete(props.task.id)}>
                 {props.task.completed ? <BackIcon /> : <DoneIcon />}</IconButton>}
 
             <TextField
                 fullWidth
                 value={value}
                 onChange={a => setValue(a.target.value)}
-                className={styles.input}
                 size='small'
                 autoComplete={"off"}
                 inputProps={{ onBlur: onBlur, onKeyDown: editKeyDown }}
             />
 
-            {!props.task.completed && <IconButton style={{color: props.task.favorite ? 'gold' : 'white'}} onClick={() => props.onToggleFavorite?.(props.task.id)}>
+            {!props.task.completed && <IconButton style={{color: props.task.favorite ? 'gold' : 'white'}}
+                onClick={() => props.onToggleFavorite?.(props.task.id)}>
                 <StarIcon /></IconButton>}
-            {<IconButton className={styles.deleteButton} onClick={() => props.onDelete(props.task.id)}>
+            {<IconButton onClick={() => props.onDelete(props.task.id)}>
                 <DeleteIcon color={'error'} /></IconButton>}
     </ListItem>
 }

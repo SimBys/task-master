@@ -11,8 +11,13 @@ import LogIn from "./pages/LogIn";
 import SignUp from "./pages/SignUp";
 import {logIn, signOut, signUp, User} from "./pages/auth";
 import {createTheme, ThemeProvider} from "@mui/material";
+import {RouterOutlet} from "./RouterOutlet";
 
-export const TodoDataContext = createContext<{ tasks: TodoTaskType[], setTasks: Function }>(null!);
+type TodoDataContextType = {
+	tasks: TodoTaskType[],
+	setTasks: Function
+}
+export const TodoDataContext = createContext<TodoDataContextType>(null!);
 
 type AuthContextType = {
 	user: User | null;
@@ -20,23 +25,26 @@ type AuthContextType = {
 	signOut: VoidFunction;
 	signUp: (username: string, email: string, password: string) => void;
 }
-
 export const AuthContext = createContext<AuthContextType>(null!);
 
-const userRaw = localStorage.getItem('user')
-const userInit: User | null = userRaw ? JSON.parse(userRaw) : null
+// Load the user from local storage
+const initialUserRaw = localStorage.getItem('user')
+// Parse the user from string to User object
+// This is the last user logged in or null
+const initialUser: User | null = initialUserRaw ? JSON.parse(initialUserRaw) : null
 
 export default function App() {
-	const [todoTasks, setTodoTasks] =
-		useState<TodoTaskType[]>(userInit ? loadTodoData(userInit.username) : []);
-	let [user, setUser] = useState(userInit);
+	let [user, setUser] = useState(initialUser);
+	const [todoData, setTodoData] =
+		useState<TodoTaskType[]>(initialUser ? loadTodoData(initialUser.username) : []);
+
 	const navigate = useNavigate();
+
 
 	useEffect(() => {
 		if (user)
-			setTodoTasks(loadTodoData(user.username))
+			setTodoData(loadTodoData(user.username))
 	}, [user]);
-
 
 	const _logIn = (usernameOrEmail: string, password: string) => {
 		const result = logIn(usernameOrEmail, password, setUser)
@@ -51,7 +59,7 @@ export default function App() {
 		navigate('')
 		setUser(null)
 		signOut()
-		setTodoTasks([])
+		setTodoData([])
 	}
 
 	const _signUp = (username: string, email: string, password: string) => {
@@ -68,7 +76,7 @@ export default function App() {
 	return (
 		<ThemeProvider theme={theme}>
 			<AuthContext.Provider value={{user, logIn: _logIn, signOut: _signOut, signUp: _signUp}}>
-				<TodoDataContext.Provider value={{tasks: todoTasks, setTasks: setTodoTasks}}>
+				<TodoDataContext.Provider value={{tasks: todoData, setTasks: setTodoData}}>
 					{user && <Navbar/>}
 					<RouterOutlet user={user}/>
 				</TodoDataContext.Provider>
@@ -76,41 +84,3 @@ export default function App() {
 		</ThemeProvider>
 	);
 }
-
-const RouterOutlet = (props: { user: any }) => {
-	const location = useLocation();
-	const [title, setTitle] = useState("");
-
-	useEffect(() => {
-		const currentPath = location.pathname;
-
-		// Set the title based on the current route
-		switch (currentPath) {
-			case "/about":
-				setTitle("About - Task master");
-				break;
-			case "/login":
-				setTitle("Log in - Task master");
-				break;
-			case "/sign-up":
-				setTitle("Sign up - Task master");
-				break;
-			default:
-				setTitle("Task master");
-		}
-	}, [location]);
-
-	return (
-		<>
-			<Helmet>
-				<title>{title}</title>
-			</Helmet>
-			<Routes>
-				<Route path="" element={props.user ? <Dashboard/> : <Home/>}/>
-				<Route path="login" element={<LogIn/>}/>
-				<Route path="sign-up" element={<SignUp/>}/>
-				<Route path="about" element={<About/>}/>
-			</Routes>
-		</>
-	);
-};

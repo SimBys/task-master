@@ -1,6 +1,6 @@
-import React, { useContext, useState, useEffect } from "react";
-import { AuthContext } from "../../App";
-import {Box, Fade, Popper, IconButton, Paper, Typography, Button, Grid} from "@mui/material";
+import React, {useContext, useEffect, useState} from "react";
+import {AuthContext} from "../../App";
+import {Button, Fade, Grid, IconButton, Paper, Popper, Typography} from "@mui/material";
 import styles from "../Navbar/Navbar.module.css";
 
 export default function ProfilePopup() {
@@ -9,23 +9,23 @@ export default function ProfilePopup() {
 	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
 	useEffect(() => {
-		const handleClose = (event: MouseEvent) => {
-			if (anchorEl?.contains(event.target as Node)) {
-				return;
-			}
+		// Close the popup when clicking outside of it
+		const onMouseUp = (event: MouseEvent) => {
+			// todo implement
 			setOpen(false);
 		};
 
-		const handleEscape = (event: KeyboardEvent) => {
-			if (event.key === "Escape") setOpen(false);
+		const onKeyDown = (event: KeyboardEvent) => {
+			if (event.key === "Escape")
+				setOpen(false);
 		};
 
-		document.addEventListener("mouseup", handleClose);
-		document.addEventListener("keydown", handleEscape);
+		document.addEventListener("mouseup", onMouseUp);
+		document.addEventListener("keydown", onKeyDown);
 
 		return () => {
-			document.removeEventListener("mouseup", handleClose);
-			document.removeEventListener("keydown", handleEscape);
+			document.removeEventListener("mouseup", onMouseUp);
+			document.removeEventListener("keydown", onKeyDown);
 		};
 	}, [anchorEl]);
 
